@@ -1,4 +1,5 @@
 ---
+#test
 # Source: jaeger/templates/cassandra-secret.yaml
 apiVersion: v1
 kind: Secret
