@@ -25,6 +25,7 @@ else
   values="https://raw.githubusercontent.com/digitalocean/marketplace-kubernetes/master/stacks/wordpress/values.yml"
 fi
 
+
 helm upgrade "$STACK" "$CHART" \
   --atomic \
   --create-namespace \
@@ -32,3 +33,10 @@ helm upgrade "$STACK" "$CHART" \
   --namespace "$NAMESPACE" \
   --values "$values" \
   --version "$CHART_VERSION"
+
+# ensure services are running
+kubectl get deployments -o custom-columns=NAME:.metadata.name | tail -n +2 | while read -r line
+do
+  kubectl rollout status -w deployment/"$line"
+done
+
